@@ -1,0 +1,16 @@
+env
+__pycache__
+app/session/*
+app/session-backup/*
+!app/session/config.ini.sample
+!app/session/config.json.sample
+notes
+config.ini
+settings.py
+anon.session
+
+crypto_bot_database.db
+database/*
+tempfile.txt
+app/tests/*/env
+*.pyc

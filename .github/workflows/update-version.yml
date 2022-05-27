@@ -1,0 +1,47 @@
+name: Update version
+on:
+  push:
+    branches:
+      - main
+      - pre
+      - staging
+      - dev
+
+env:
+  DOCKER_IMAGE: python-template
+
+jobs:
+
+  update_version_staging:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    steps:
+    - name: Update Minor version
+      uses: hmanzur/actions-set-secret@v2.0.0
+      with:
+        name: 'MINOR_VERSION'
+        value: $((${{ secrets.MINOR_VERSION }}+1))
+        repository: xussof/${{ env.DOCKER_IMAGE }}
+        token: ${{ secrets.SCRAPERSTOCK_TOKEN }}
+
+  update_version_main:
+    runs-on: ubuntu-latest
+    outputs:
+      output_main: ${{ steps.step1.outputs.test }}
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Reseting Minor version
+      uses: hmanzur/actions-set-secret@v2.0.0
+      with:
+        name: 'MINOR_VERSION'
+        value: $((0))
+        repository: xussof/${{ env.DOCKER_IMAGE }}
+        token: ${{ secrets.SCRAPERSTOCK_TOKEN }}
+
+    - name: Update Major version
+      uses: hmanzur/actions-set-secret@v2.0.0
+      with:
+        name: 'MAJOR_VERSION'
+        value: $((${{ secrets.MAJOR_VERSION }}+1))
+        repository: xussof/${{ env.DOCKER_IMAGE }}
+        token: ${{ secrets.SCRAPERSTOCK_TOKEN }}
